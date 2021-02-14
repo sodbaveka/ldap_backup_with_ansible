@@ -30,6 +30,9 @@ class LdapRestoredAnnuary:
 
 	push_data()
 		To perform an Add operation to backup server
+
+	delete_data():
+		To perform an Delete operation to backup server
 	"""
 
 	def __init__(self, ldap_backup_host, connexion_username, connexion_password):
@@ -73,7 +76,6 @@ class LdapRestoredAnnuary:
 		for element in self.uo_backup:
 			self.connexion.add(element.dn, attributes = element.attributes)
 			print("{} created!".format(element.dn))
-		print("###")
 		for element in self.users_backup:
 			self.connexion.add(element.dn, attributes = element.attributes)
 			print("{} created!".format(element.dn))
@@ -83,7 +85,6 @@ class LdapRestoredAnnuary:
 		for element in self.users_backup:
 			self.connexion.delete(element.dn)
 			print("{} deleted!".format(element.dn))
-		print("###")
 		for element in self.uo_backup:
 			self.connexion.delete(element.dn)
 			print("{} deleted!".format(element.dn))

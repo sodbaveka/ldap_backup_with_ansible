@@ -6,13 +6,25 @@ class OrganizationalUnit:
 
 	Attributes
 	----------
-	server : Server object
-		Definition of a Server object
+	dn : str
+		Distinguished Name
+
+	attributes : dict
+		Dictionary of attributes
+
+	objectClass : str
+		Object class
+
+	ou : str
+		Organizational unit's name
+
+	description : str
+		A description of organizational unit
 
 	Methods
 	-------
-	name(additionnale):
-		descript
+	str__():
+		Redefinition of method __str__()
 	"""
 
 	def __init__(self, uo_dict):
@@ -23,8 +35,20 @@ class OrganizationalUnit:
 
 		Attributes
 		----------
-		server : Server object
-			Definition of a Server object
+		dn : str
+			Distinguished Name
+
+		attributes : dict
+			Dictionary of attributes
+
+		objectClass : str
+			Object class
+
+		ou : str
+			Organizational unit's name
+
+		description : str
+			A description of organizational unit
 
 		"""
 
@@ -36,4 +60,5 @@ class OrganizationalUnit:
 		self.description = uo_dict['attributes']['description'][0]
 
 	def __str__(self):
+		"""Redefinition of method __str__"""
 		return "dn: {}\nobjectClass: {}\nou: {}\ndescription: {}\n".format(self.dn, self.objectClass, self.ou, self.description)

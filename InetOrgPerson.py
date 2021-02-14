@@ -1,18 +1,39 @@
 class InetOrgPerson:
 	"""
-	A class to represent a LDAP Organizational Unit
+	A class to represent a LDAP user (type InetOrgPerson)
 
 	...
 
 	Attributes
 	----------
-	server : Server object
-		Definition of a Server object
+	dn : str
+		Distinguished Name
+
+	attributes : dict
+		Dictionary of attributes
+
+	objectClass : str
+		Object class
+
+	givenName : str
+		Given name
+
+	sn : str
+		Surname
+
+	cn : str
+		Common name
+
+	uid : str
+		User ID
+
+	userPassword : str
+		User password
 
 	Methods
 	-------
-	name(additionnale):
-		descript
+	__str__():
+		Redefinition of method __str__()
 	"""
 
 	def __init__(self, uo_dict):
@@ -23,8 +44,29 @@ class InetOrgPerson:
 
 		Attributes
 		----------
-		server : Server object
-			Definition of a Server object
+		dn : str
+			Distinguished Name
+
+		attributes : dict
+			Dictionary of attributes
+
+		objectClass : str
+			Object class
+
+		givenName : str
+			Given name
+
+		sn : str
+			Surname
+
+		cn : str
+			Common name
+
+		uid : str
+			User ID
+
+		userPassword : str
+			User password
 
 		"""
 
@@ -39,4 +81,5 @@ class InetOrgPerson:
 		self.userPassword = uo_dict['attributes']['userPassword'][0]
 
 	def __str__(self):
-		return "dn: {}\nobjectClass: {}\ngivenName: {}\nsn: {}\ncn: {}\nuid: {}\nuserPAssword: {}\n".format(self.dn, self.objectClass, self.givenName, self.sn, self.cn, self.uid, self.userPassword)
+		"""Redefinition of method __str__"""
+		return "dn: {}\nobjectClass: {}\ngivenName: {}\nsn: {}\ncn: {}\nuid: {}\nuserPassword: {}\n".format(self.dn, self.objectClass, self.givenName, self.sn, self.cn, self.uid, self.userPassword)
