@@ -1,0 +1,21 @@
+---
+- name: PremierPlaybook
+  hosts:  hosts
+  remote_user:  theseus
+  become: yes
+
+  # vars:
+  #   var1: "variable de playbook"
+  roles:
+    - openldap 
+
+  tasks:
+  - name: Test de la préséance des variable
+    debug:
+      msg: "ceci est un message avec {{var1}}"
+  - name: Message 
+    debug:
+      msg: "Tâches du playbook exécutées"
+
+  
+...
