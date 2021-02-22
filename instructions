@@ -1,0 +1,124 @@
+###INSTRUCTIONS EN FRANCAIS###
+
+I/ Introduction
+
+Le but de ce projet est :
+- d'importer les informations sur les unités organisationnelles et les utilisateurs d'un annuaire ldap,
+- de les sauvegarder dans un fichier ldif, un fichier json et un fichier bin,
+- de pouvoir les exporter/restaurer dans un serveur ldap de backup.
+
+Version de Python:
+Ce projet a été écrit en Python 3.7.3.
+
+
+II/ Importation/Sauvegarde
+
+II.1/ Ressources
+Script principal = ldap_backup_main.py
+Module personnel utilisé = LdapAnnuary.py, InetOrgPerson.py, OrganizationalUnit.py
+
+II.2/ Informations de connexion
+Les informations de connexion sont à renseigner dans le script principal.
+ldap_main_host = 'server_ip'
+connexion_username = 'cn=admin,dc=example,dc=com'
+connexion_password = 'admin_password'
+
+II.3/ Lancement
+root$ python3 ldap_backup_main.py
+
+Dans le répertoire courant, le script crée les fichiers annuary_backup.ldif, annuary_backup.json et data.bin contenant les informations de l'annuaire.
+
+>>>User authenticated.
+>>>Welcome dn:cn=admin,dc=example,dc=com.
+>>>Serialization complete.
+>>>Copy to ldif file completed.
+>>>Copy to json file completed.
+
+
+III/ Exportation/Restauration
+
+III.1/ Ressources
+Script principal = ldap_restore_main.py
+Modules personnels utilisés = LdapRestoredAnnuary.py, InetOrgPerson.py, OrganizationalUnit.py
+
+III.2/ Prérequis
+Un fichier data.bin, contenant les informations à restaurer, doit se trouver dans le répertoire courant.
+
+III.3/ Informations de connexion
+Les informations de connexion sont à renseigner dans le script principal.
+ldap_backup_host = 'backup_server_ip'
+connexion_username = 'cn=admin,dc=example,dc=com'
+connexion_password = 'admin_password'
+
+III.4/ Lancement
+root$ python3 ldap_restore_main.py
+
+>>>User authenticated.
+>>>Welcome dn:cn=admin,dc=example,dc=com.
+>>>Deserialization completed.
+>>>ou=ou1,dc=example,dc=com created!
+>>>cn=user1,ou=ou1,dc=example,dc=com created!
+>>>[...]
+>>>Restoration completed.
+
+###ENGLISH INSTRUCTIONS###
+
+I/ Introduction
+
+The aim of this project is:
+- import informations on organizational units and users from an ldap directory,
+- save informations in an ldif file, a json file and a bin file,
+- export / restore informations in a backup ldap server.
+
+Python version:
+This project was written en Python 3.7.3.
+
+II/ Import/Backup
+
+II.1/ Ressources
+Main script = ldap_backup_main.py
+Personnal used modules = LdapAnnuary.py, InetOrgPerson.py, OrganizationalUnit.py
+
+II.2/ Connexion informations
+Connection informations must be entered in the main script.
+ldap_backup_host = 'backup_server_ip'
+connexion_username = 'cn=admin,dc=example,dc=com'
+connexion_password = 'admin_password'
+
+II.3/ Launch
+root$ python3 ldap_backup_main.py
+
+In the current directory, the script creates the files annuary_backup.ldif, annuary_backup.json and data.bin containing ldap informations.
+
+>>>User authenticated.
+>>>Welcome dn:cn=admin,dc=example,dc=com.
+>>>serialization complete.
+>>>copy to ldif file completed.
+>>>copy to json file completed.
+
+III/ Export/Restoration
+
+III.1/ Ressources
+Main script = ldap_restore_main.py
+Personnal used modules = LdapRestoredAnnuary.py, InetOrgPerson.py, OrganizationalUnit.py
+
+III.2/ Prerequisite
+A data.bin file, containing informations to restore, must be located in the current directory.
+
+III.3/ Connexion Informations
+Connection informations must be entered in the main script.
+ldap_backup_host = 'backup_server_ip'
+connexion_username = 'cn=admin,dc=example,dc=com'
+connexion_password = 'admin_password'
+
+III.4/ Launch
+root$ python3 ldap_restore_main.py
+
+>>>User authenticated.
+>>>Welcome dn:cn=admin,dc=example,dc=com.
+>>>Deserialization completed.
+>>>ou=ou1,dc=example,dc=com created!
+>>>cn=user1,ou=ou1,dc=example,dc=com created!
+>>>[...]
+>>>Restoration completed.
+
