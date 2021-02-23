@@ -1,9 +1,9 @@
 #!/usr/bin/python3
-"""Script for exporting (saving) and importing data from an LDAP directory in LDIFF and JSON formats."""
+"""Script for exporting (saving) and importing data from an LDAP directory in LDIF and JSON formats."""
 
 __authors__ = ("sodbaveka")
 __contact__ = ("sodbaveka@gmail.com")
-__version__ = "1.0.0"
+__version__ = "2.0"
 __copyright__ = "copyleft"
 __date__ = "2021/02"
 
@@ -28,14 +28,12 @@ if __name__ == "__main__":
 	    	#print(ldap_annuary.data_ldif)
 
 	    	## Serialization
-	    	#ldap_annuary.serialize_in_file()
-	    	#print("Serialization completed.")
-	    	
+	    	ldap_annuary.serialize_in_file()
+	    		    	
 	    	# Copy to files
-	    	ldap_annuary.copy_to_ldif_file()
-	    	print("Copy to ldif file completed.")
+	    	ldap_annuary.copy_to_ldif_file()	  	
 	    	ldap_annuary.copy_to_json_file()
-	    	print("Copy to json file completed.")
+	    	ldap_annuary.copy_to_yaml_file()	    	
 
     except ldap3.core.exceptions.LDAPBindError as login_error:
     	print(str(login_error))

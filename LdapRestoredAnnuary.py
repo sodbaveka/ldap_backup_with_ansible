@@ -2,10 +2,11 @@ from ldap3 import Server, Connection, ALL, ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRI
 from OrganizationalUnit import OrganizationalUnit
 from InetOrgPerson import InetOrgPerson
 import pickle
+import json
 
 class LdapRestoredAnnuary:
 	"""
-	A class to represent a LDAP annuary restored from a bin file called data.bin
+	A class to represent a LDAP annuary restored from a json file
 
 	...
 
@@ -25,8 +26,11 @@ class LdapRestoredAnnuary:
 
 	Methods
 	-------
-	deserialize_from_file()
-		To deserialize objects from a file called data.bin
+	import_from_json():
+		To import datas from a json file
+
+	deserialize_from_bin()
+		To deserialize objects from a file called annuary_backup.bin
 
 	push_data()
 		To perform an Add operation to backup server
@@ -61,15 +65,25 @@ class LdapRestoredAnnuary:
 		self.uo_backup = []
 		self.users_backup = []
 		
-	def deserialize_from_file(self):
-		"""To deserialize objects from a file called data.bin"""
+
+	def import_from_json(self):
+		"""To import datas from a json file"""
 		try:
-		    with open('data.bin', 'rb') as file:
-		        self.uo_backup = pickle.load(file)
-		        self.users_backup = pickle.load(file)
-		        #print(self.uo_backup, self.users_backup, sep='\n')
-		except (IOError, pickle.UnpicklingError):
-		    print('Reading error.')
+			with open('annuary_backup.json', 'rb') as file:
+			    self.data = json.load(file)
+			    for element in self.data:
+			     	#self.content[element["objectClass"]].append()
+			     	if element['attributes']["objectClass"] == 'organizationalUnit':
+			     		uo_object = OrganizationalUnit(element)
+			     		self.uo_backup.append(uo_object)
+			     	elif element['attributes']["objectClass"] == 'inetOrgPerson':
+			     		user_object = InetOrgPerson(element)
+			     		self.users_backup.append(user_object)
+			     	else:
+			     		print("Importation error")
+			print("Importation completed.")
+		except (IOError, FileNotFoundError):
+		     print('Missing file.')
 
 	def push_data(self):
 		"""To perform an Add operation to backup server""" 
@@ -79,6 +93,7 @@ class LdapRestoredAnnuary:
 		for element in self.users_backup:
 			self.connexion.add(element.dn, attributes = element.attributes)
 			print("{} created!".format(element.dn))
+		print("Restoration completed.")
 
 	def delete_data(self):
 		"""To perform an Delete operation to backup server""" 
@@ -88,3 +103,15 @@ class LdapRestoredAnnuary:
 		for element in self.uo_backup:
 			self.connexion.delete(element.dn)
 			print("{} deleted!".format(element.dn))
+		print("Removal completed.")
+
+	def deserialize_from_bin(self):
+		"""To deserialize objects from a file called annuary_backup.bin"""
+		try:
+			with open('annuary_backup.bin', 'rb') as file:
+			    self.uo_backup = pickle.load(file)
+			    self.users_backup = pickle.load(file)
+			    print("Deserialization completed.")
+			    #print(self.uo_backup, self.users_backup, sep='\n')
+		except (IOError, pickle.UnpicklingError):
+			print('Reading error.')

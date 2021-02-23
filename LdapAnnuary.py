@@ -1,9 +1,10 @@
 from ldap3 import Server, Connection, ALL, ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES, SUBTREE
 import json
 import simplejson
+import pickle
+import yaml
 from OrganizationalUnit import OrganizationalUnit
 from InetOrgPerson import InetOrgPerson
-import pickle
 
 class LdapAnnuary:
 	"""
@@ -58,7 +59,10 @@ class LdapAnnuary:
 		To create and write informations in ldif file
 
 	copy_to_json_file():
-		To create and write informations in json file	
+		To create and write informations in json file
+
+	copy_to_yaml_file():
+		To create and write informations in yaml file	
 
 	serialize_in_file():
 		To serialiaze, create and write informations in bin file	
@@ -130,18 +134,12 @@ class LdapAnnuary:
 	def get_ou_dicts(self):
 		"""To get a list of ou dictionaries"""
 		self.connexion.search(search_base = 'dc=sodbaveka,dc=com', search_filter = '(objectclass=organizationalUnit)', search_scope = SUBTREE, attributes=ALL_ATTRIBUTES)
-		uo_list = []
-		for element in self.connexion.response:
-			uo_list.append(element)
-		return uo_list
+		return self.connexion.response
 
 	def get_users_dicts(self):
 		"""To get a list of users dictionaries"""
 		self.connexion.search(search_base = 'dc=sodbaveka,dc=com', search_filter = '(objectclass=inetOrgPerson)', search_scope = SUBTREE, attributes = ALL_ATTRIBUTES)
-		users_list = []
-		for element in self.connexion.response:
-			users_list.append(element)
-		return users_list
+		return self.connexion.response
 
 	def get_data_ldif(self):
 		"""To write informatons in file with ldif format"""
@@ -163,41 +161,80 @@ class LdapAnnuary:
 		file = open("annuary_backup.ldif","wt")
 		file.write(self.data_ldif)
 		file.close()
+		print("Copy to ldif file completed.")
 
 	def copy_to_json_file(self):
 		"""To create and write informations in json file"""	
 		file = open("annuary_backup.json","wt")
 		# ##Method01 = example to create a string json file
 		# file.write(simplejson.dumps(self.data_ldif))
-		##Method02 = example by extracting data from a dictionary
-		new_list = []
-		for element in self.organizational_units_dicts:
-			new_dict = {}
-			new_dict['dn'] = element.get('dn')
-			new_dict['objectClass'] = element['attributes']['objectClass'][0]
-			new_dict['ou'] = element['attributes']['ou'][0]
-			new_dict['description'] = element['attributes']['description'][0]
-			new_list.append(new_dict)
+		# ##Method02 = example by extracting data from a dictionary
+		# new_list = []
+		# for element in self.organizational_units_dicts:
+		# 	new_dict = {}
+		# 	new_dict['dn'] = element.get('dn')
+		# 	new_dict['objectClass'] = element['attributes']['objectClass'][0]
+		# 	new_dict['ou'] = element['attributes']['ou'][0]
+		# 	new_dict['description'] = element['attributes']['description'][0]
+		# 	new_list.append(new_dict)
 		##Method03 = example by extracting data from an object
+		new_list = []
+		for element in self.organizational_units_objects:
+			new_dict = {}
+			new_dict['dn'] = element.dn
+			new_dict['attributes'] = {}
+			new_dict['attributes']['objectClass'] = element.objectClass
+			new_dict['attributes']['ou'] = element.ou
+			new_dict['attributes']['description'] = element.description
+			new_list.append(new_dict)
 		for element in self.users_objects:
 			new_dict = {}
-			print(element.dn)
 			new_dict['dn'] = element.dn
-			new_dict['objectClass'] = element.objectClass
-			new_dict['givenName'] = element.givenName
-			new_dict['sn'] = element.sn
-			new_dict['cn'] = element.cn
-			new_dict['uid'] = element.uid
-			new_dict['userPassword'] = str(element.userPassword)
+			new_dict['attributes'] = {}
+			new_dict['attributes']['objectClass'] = element.objectClass
+			new_dict['attributes']['givenName'] = element.givenName
+			new_dict['attributes']['sn'] = element.sn
+			new_dict['attributes']['cn'] = element.cn
+			new_dict['attributes']['uid'] = element.uid
+			new_dict['attributes']['userPassword'] = str(element.userPassword)
 			new_list.append(new_dict)
 		file.write(json.dumps(new_list, sort_keys=True, indent=4))
 		file.close()
+		print("Copy to json file completed.")
+
+	def copy_to_yaml_file(self):
+		"""To create and write informations in yaml file"""	
+		file = open("annuary_backup.yaml","wt")
+		new_list = []
+		for element in self.organizational_units_objects:
+			new_dict = {}
+			new_dict['dn'] = element.dn
+			new_dict['attributes'] = {}
+			new_dict['attributes']['objectClass'] = element.objectClass
+			new_dict['attributes']['ou'] = element.ou
+			new_dict['attributes']['description'] = element.description
+			new_list.append(new_dict)
+		for element in self.users_objects:
+			new_dict = {}
+			new_dict['dn'] = element.dn
+			new_dict['attributes'] = {}
+			new_dict['attributes']['objectClass'] = element.objectClass
+			new_dict['attributes']['givenName'] = element.givenName
+			new_dict['attributes']['sn'] = element.sn
+			new_dict['attributes']['cn'] = element.cn
+			new_dict['attributes']['uid'] = element.uid
+			new_dict['attributes']['userPassword'] = str(element.userPassword)
+			new_list.append(new_dict)
+		yaml.dump(new_list, file, sort_keys=True, indent=4)
+		file.close()
+		print("Copy to yaml file completed.")
 
 	def serialize_in_file(self):
 		"""To serialiaze, create and write informations in bin file"""	
 		try:
-		    with open('data.bin', 'wb') as file:
+		    with open('annuary_backup.bin', 'wb') as file:
 		        pickle.dump(self.organizational_units_objects, file, pickle.HIGHEST_PROTOCOL)
 		        pickle.dump(self.users_objects, file, pickle.HIGHEST_PROTOCOL)
+		        print("Serialization completed.")
 		except (IOError, pickle.PicklingError):
 		    print('Writing error.')
