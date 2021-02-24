@@ -1,10 +1,60 @@
 ---
-- name: Mise à jour des dépôts
-  apt:
-    update_cache: yes  
+# - name: Updating repositories
+#   apt:
+#     update_cache: yes 
+
+# - name: Variable precedence test
+#   debug:
+#     msg: "This is a message with the variable {{admin_login}}"
+
+# - name: Do NOT start automatic configuration
+#   debconf: >
+#     name=slapd
+#     question='slapd/no_configuration'
+#     value=true
+#     vtype=boolean
+#   tags: openldap
+- name: Automatic configuration
+  #no_log: true
+  debconf:
+    name: slapd
+    question: "{{ item['question'] }}"
+    value: "{{ item['value'] }}"
+    vtype: "{{ item['vtype'] }}"
+  become: true
+  changed_when: false
+  loop:
+    - question: slapd/internal/generated_adminpw
+      value: "{{ admin_password }}"
+      vtype: password
+    - question: slapd/password2
+      value: "{{ admin_password }}"
+      vtype: password
+    - question: slapd/internal/adminpw
+      value: "{{ admin_password }}"
+      vtype: password
+    - question: slapd/password1
+      value: "{{ admin_password }}"
+      vtype: password
+    - question: slapd/domain
+      value: "{{ domain_name }}"
+      vtype: string
+    - question: shared/organization
+      value: "{{ organization }}"
+      vtype: string
+    - question: slapd/backend
+      value: "{{ db_format }}"
+      vtype: string
     
-- name: Installation vlc
+- name: Installing slapd
   apt:
-    name: vlc
+    name: slapd
     state: present
+    update_cache: yes
+
+- name: Installing ldap-utils
+  apt:
+    name: ldap-utils
+    state: present
+    update_cache: yes
 ...

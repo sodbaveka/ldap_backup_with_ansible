@@ -1,0 +1,35 @@
+---
+# - name: Downloading 'ldap-account-manager'
+#   get_url:
+#     url: https://netcologne.dl.sourceforge.net/project/lam/LAM/7.4/ldap-account-manager_7.4-1_all.deb
+#     dest: /tmp/ldap-account-manager_7.4-1_all.deb
+
+- name: Installing dependencies
+  apt:
+    pkg:
+      - php 
+      - php-ldap 
+      - php-gd 
+      - php-imagick 
+      - php-json 
+      - php-curl 
+      - php-zip 
+      - php-xml 
+      - php-gmp 
+      - libapache2-mod-php 
+      - libapache2-mod-fcgid 
+      - php-fpm 
+      - php-phpseclib 
+      - php-monolog
+    state: present
+    update_cache: yes
+
+- name: Fixing missing and broken packages
+  shell: apt --fix-broken install
+  ignore_errors: yes
+
+
+- name: Installing a .deb package from the internet
+  apt:
+    deb: https://netcologne.dl.sourceforge.net/project/lam/LAM/7.4/ldap-account-manager_7.4-1_all.deb
+...

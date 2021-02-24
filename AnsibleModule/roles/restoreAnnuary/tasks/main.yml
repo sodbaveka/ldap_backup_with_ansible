@@ -1,0 +1,14 @@
+---
+- name: Copying ldif file to managed nodes
+  copy:
+    src: /home/theseus/SodbavekaProject/annuary_backup.ldif
+    dest: "{{path_to_ldif_file}}"
+    owner: theseus
+    group: theseus
+    mode: '0777'
+  become: true
+
+- name: Restoring annuary from a ldif file
+  shell: ldapadd -x -h localhost -D {{admin_dn}} -w {{admin_password}} -f {{path_to_ldif_file}}
+  ignore_errors: yes
+...
