@@ -4,7 +4,7 @@ I/ Introduction
 
 Le but de ce projet est :
 - d'importer les informations sur les unités organisationnelles et les utilisateurs d'un annuaire ldap,
-- de les sauvegarder dans des fichiers de differents formats exploitable (ldif, json, yml),
+- de les sauvegarder dans des fichiers de différents formats exploitables (ldif, json, yml),
 - de pouvoir les exporter/restaurer dans un serveur ldap de backup.
 
 Version de Python:
