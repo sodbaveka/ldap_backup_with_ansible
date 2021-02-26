@@ -9,6 +9,9 @@ Le but de ce projet est :
 Version de Ansible :
 Ce projet a été écrit avec ansible 2.10.5.
 
+Pré-requis:
+Un serveur apache, un serveur ssh et python3 sont pré-installés sur la machine distante (host).
+
 
 II/ Inventaire Ansible
 
@@ -87,6 +90,9 @@ The aim of this project is:
 
 Ansible version:
 This project was written with ansible 2.10.5.
+
+Prerequisites:
+An apache server, an ssh server and python3 are pre-installed on the remote machine (host).
 
 
 II/ Ansible Inventory

@@ -1,10 +1,48 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
+# Copyright: (c) 2021, Mickaël Duchet <sodbaveka@gmail.com>
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
+DOCUMENTATION = '''
+module: ldap_backup_module
+short_description: Module that saves ldap datas
+description: 
+	- import informations on organizational units and users from an ldap directory,
+	- save informations in files of different exploitable formats (ldif, json, yml).
+version_added: "2.10"
+author: Mickaël Duchet (@sodbaveka)
+options:
+	ldap_main_host:
+		description: server ip
+		required: yes 
+    connexion_username:
+     	description: connexion login to ldap annuary
+		required: yes
+    connexion_password:
+     	description: connexion password
+		required: yes
+'''
+
+EXAMPLES = '''
+- name: "Backup module launched"
+    ldap_backup_module: 
+      ldap_main_host: 'srv-ldap-01'
+      connexion_username: 'cn=admin,dc=example,dc=com'
+      connexion_password: 'p@ssword'
+'''
+
+RETURN = '''
+meta:
+	description: Return 'Success' if files are completed
+'''
+
+import ldap3
+from ansible.module_utils.basic import AnsibleModule
 from ldap3 import Server, Connection, ALL, ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES, SUBTREE
 import json
-import simplejson
 import pickle
 import yaml
-from OrganizationalUnit import OrganizationalUnit
-from InetOrgPerson import InetOrgPerson
 
 class LdapAnnuary:
 	"""
@@ -40,19 +78,19 @@ class LdapAnnuary:
 	__str__():
 		Redefinition of method __str__
 
-	get_ou_objects():
-		To get a list of ou objects
+	fetch_ou_objects():
+		To fetch a list of ou objects
 
-	get_users_objects():
-		To get a list of user objects
+	fetch_users_objects():
+		To fetch a list of user objects
 
-	get_ou_dicts():
-		To get a list of ou dictionaries
+	fetch_ou_dicts():
+		To fetch a list of ou dictionaries
 
-	get_users_dicts(s):
-		To get a list of users dictionaries
+	fetch_users_dicts(s):
+		To fetch a list of users dictionaries
 
-	get_data_ldif():
+	write_data_ldif():
 		To write informatons in file with ldif format
 
 	copy_to_ldif_file():
@@ -64,7 +102,7 @@ class LdapAnnuary:
 	copy_to_yaml_file():
 		To create and write informations in yaml file	
 
-	serialize_in_file():
+	serialize_in_bin():
 		To serialiaze, create and write informations in bin file	
 
 	"""
@@ -102,19 +140,19 @@ class LdapAnnuary:
 		
 		self.server = Server(ldap_main_host, get_info=ALL)
 		self.connexion = Connection(self.server, connexion_username, connexion_password, auto_bind=True)
-		self.organizational_units_dicts = self.get_ou_dicts()
-		self.users_dicts = self.get_users_dicts()
-		self.organizational_units_objects = self.get_ou_objects()
-		self.users_objects = self.get_users_objects()
-		self.data_ldif = self.get_data_ldif()
+		self.organizational_units_dicts = self.fetch_ou_dicts()
+		self.users_dicts = self.fetch_users_dicts()
+		self.organizational_units_objects = self.fetch_ou_objects()
+		self.users_objects = self.fetch_users_objects()
+		self.data_ldif = self.write_data_ldif()
 			
 
 	def __str__(self):
 		"""Redefinition of method __str__"""
 		return self.data_ldif
 
-	def get_ou_objects(self):
-		"""To get a list of ou objects"""
+	def fetch_ou_objects(self):
+		"""To fetch a list of ou objects"""
 		self.connexion.search(search_base = 'dc=sodbaveka,dc=com', search_filter = '(objectclass=organizationalUnit)', search_scope = SUBTREE, attributes=ALL_ATTRIBUTES)
 		uo_list = []
 		for element in self.connexion.response:
@@ -122,8 +160,8 @@ class LdapAnnuary:
 			uo_list.append(uo_object)
 		return uo_list
 
-	def get_users_objects(self):
-		"""To get a list of user objects"""
+	def fetch_users_objects(self):
+		"""To fetch a list of user objects"""
 		self.connexion.search(search_base = 'dc=sodbaveka,dc=com', search_filter = '(objectclass=inetOrgPerson)', search_scope = SUBTREE, attributes=ALL_ATTRIBUTES)
 		users_list = []
 		for element in self.connexion.response:
@@ -131,17 +169,17 @@ class LdapAnnuary:
 			users_list.append(user_object)
 		return users_list
 
-	def get_ou_dicts(self):
-		"""To get a list of ou dictionaries"""
+	def fetch_ou_dicts(self):
+		"""To fetch a list of ou dictionaries"""
 		self.connexion.search(search_base = 'dc=sodbaveka,dc=com', search_filter = '(objectclass=organizationalUnit)', search_scope = SUBTREE, attributes=ALL_ATTRIBUTES)
 		return self.connexion.response
 
-	def get_users_dicts(self):
-		"""To get a list of users dictionaries"""
+	def fetch_users_dicts(self):
+		"""To fetch a list of users dictionaries"""
 		self.connexion.search(search_base = 'dc=sodbaveka,dc=com', search_filter = '(objectclass=inetOrgPerson)', search_scope = SUBTREE, attributes = ALL_ATTRIBUTES)
 		return self.connexion.response
 
-	def get_data_ldif(self):
+	def write_data_ldif(self):
 		"""To write informatons in file with ldif format"""
 		ldif_file = ""
 		# ##Method01
@@ -229,7 +267,7 @@ class LdapAnnuary:
 		file.close()
 		print("Copy to yaml file completed.")
 
-	def serialize_in_file(self):
+	def serialize_in_bin(self):
 		"""To serialiaze, create and write informations in bin file"""	
 		try:
 		    with open('annuary_backup.bin', 'wb') as file:
@@ -237,4 +275,178 @@ class LdapAnnuary:
 		        pickle.dump(self.users_objects, file, pickle.HIGHEST_PROTOCOL)
 		        print("Serialization completed.")
 		except (IOError, pickle.PicklingError):
-		    print('Writing error.')
+			print('Writing error.')
+
+
+class OrganizationalUnit:
+	"""
+	A class to represent a LDAP Organizational Unit
+
+	...
+
+	Attributes
+	----------
+	dn : str
+		Distinguished Name
+
+	attributes : dict
+		Dictionary of attributes
+
+	objectClass : str
+		Object class
+
+	ou : str
+		Organizational unit's name
+
+	description : str
+		A description of organizational unit
+
+	Methods
+	-------
+	__str__(): 
+		Redefinition of method __str__()
+	"""
+
+	def __init__(self, uo_dict):
+		"""
+		Constructs all the necessary attributes for the LDAP Organizational Unit object
+
+		...
+
+		Attributes
+		----------
+		dn : str
+			Distinguished Name
+
+		attributes : dict
+			Dictionary of attributes
+
+		objectClass : str
+			Object class
+
+		ou : str
+			Organizational unit's name
+
+		description : str
+			A description of organizational unit
+
+		"""
+		
+		self.dn = uo_dict['dn']
+		self.attributes = uo_dict['attributes']
+		self.objectClass = uo_dict['attributes']['objectClass'][0]
+		self.ou = uo_dict['attributes']['ou'][0]
+		self.description = uo_dict['attributes']['description'][0]
+
+	def __str__(self):
+		"""Redefinition of method __str__"""
+		return "dn: {}\nobjectClass: {}\nou: {}\ndescription: {}\n".format(self.dn, self.objectClass, self.ou, self.description)
+
+
+class InetOrgPerson:
+	"""
+	A class to represent a LDAP user (type InetOrgPerson)
+
+	...
+
+	Attributes
+	----------
+	dn : str
+		Distinguished Name
+
+	attributes : dict
+		Dictionary of attributes
+
+	objectClass : str
+		Object class
+
+	givenName : str
+		Given name
+
+	sn : str
+		Surname
+
+	cn : str
+		Common name
+
+	uid : str
+		User ID
+
+	userPassword : str
+		User password
+
+	Methods
+	-------
+	__str__():
+		Redefinition of method __str__()
+	"""
+
+	def __init__(self, uo_dict):
+		"""
+		Constructs all the necessary attributes for the LDAP Organizational Unit object
+
+		...
+
+		Attributes
+		----------
+		dn : str
+			Distinguished Name
+
+		attributes : dict
+			Dictionary of attributes
+
+		objectClass : str
+			Object class
+
+		givenName : str
+			Given name
+
+		sn : str
+			Surname
+
+		cn : str
+			Common name
+
+		uid : str
+			User ID
+
+		userPassword : str
+			User password
+
+		"""
+		
+		self.dn = uo_dict['dn']
+		self.attributes = uo_dict['attributes']
+		self.objectClass = uo_dict['attributes']['objectClass'][0]
+		self.givenName = uo_dict['attributes']['givenName'][0]
+		self.sn = uo_dict['attributes']['sn'][0]
+		self.cn = uo_dict['attributes']['cn'][0]
+		self.uid = uo_dict['attributes']['uid'][0]
+		self.userPassword = uo_dict['attributes']['userPassword'][0]
+
+	def __str__(self):
+		"""Redefinition of method __str__"""
+		return "dn: {}\nobjectClass: {}\ngivenName: {}\nsn: {}\ncn: {}\nuid: {}\nuserPassword: {}\n".format(self.dn, self.objectClass, self.givenName, self.sn, self.cn, self.uid, self.userPassword)
+
+
+def main():
+	module = AnsibleModule(argument_spec=dict(ldap_main_host=dict(required=True), connexion_username=dict(required=True),connexion_password=dict(required=True)), supports_check_mode=True)
+	ldap_main_host = module.params['ldap_main_host']
+	connexion_username = module.params['connexion_username']
+	connexion_password = module.params['connexion_password']
+	
+	try:
+		ldap_annuary = LdapAnnuary(ldap_main_host, connexion_username, connexion_password)
+		if ldap_annuary:
+			ldap_annuary.copy_to_json_file()
+			ldap_annuary.copy_to_yaml_file()
+			ldap_annuary.copy_to_ldif_file()
+	except ldap3.core.exceptions.LDAPBindError as login_error:
+		print(str(login_error))
+	except ldap3.core.exceptions.LDAPPasswordIsMandatoryError as password_error:
+		print(str(password_error))
+
+	module.exit_json(changed=False, meta='Success')
+
+if __name__ == "__main__":
+	main()

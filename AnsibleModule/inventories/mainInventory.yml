@@ -3,5 +3,4 @@ all:
     hosts:
       hosts:
         srv-ldap-02:
-        srv-ldap-03:
-        srv-ldap-04:
+        srv-ldap-05:  

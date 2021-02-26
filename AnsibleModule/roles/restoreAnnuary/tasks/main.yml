@@ -1,7 +1,7 @@
 ---
 - name: Copying ldif file to managed nodes
   copy:
-    src: /home/theseus/SodbavekaProject/annuary_backup.ldif
+    src: /home/theseus/SodbavekaProject/AnsibleModule/annuary_backup.ldif
     dest: "{{path_to_ldif_file}}"
     owner: theseus
     group: theseus

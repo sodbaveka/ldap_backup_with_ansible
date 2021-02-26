@@ -1,22 +1,54 @@
 ---
-- name: Restauration of a ldap annuary
+- name: Installing a ldap server
   hosts:  hosts
   remote_user:  theseus
   become: yes
-
-  # vars:
-  #   var1: "Playbook variable"
+  no_log: True
   roles:
     - openldap 
-    - restoreAnnuary
     - ldapAccountManager
-
   tasks:
-  # - name: Variable precedence test
-  #   debug:
-  #     msg: "This is a message with the variable {{domain_name}}"
+    - name: Roles message 
+      debug:
+        msg: "All roles are completed"
 
-  - name: Final message 
-    debug:
-      msg: "All Playbook tasks are completed"
+- name: Saving annuary informations
+  hosts: localhost
+  gather_facts: no
+  tasks:
+  - name: Backup module launched
+    ldap_backup_module: 
+      ldap_main_host: 'srv-ldap-01'
+      connexion_username: 'cn=admin,dc=sodbaveka,dc=com'
+      connexion_password: 'theseus'
+    register: result
+    no_log: True
+  - debug: 
+      var: result
+      verbosity: 2
+
+- name: Restoring annuary informations
+  hosts: localhost
+  gather_facts: no
+  tasks:
+  - name: Restoration module launched
+    ldap_restore_module: 
+      ldap_backup_host: "{{item}}"
+      connexion_username: 'cn=admin,dc=sodbaveka,dc=com'
+      connexion_password: 'theseus'
+      choosen_action: 'delete'
+    register: result
+    no_log: True
+    with_items: "{{ groups['hosts'] }}"    
+  - debug:
+      var: result
+      verbosity: 2
+
+- name: Final message
+  hosts: hosts
+  tasks:
+    - name: Final message
+      debug:
+        msg: "All Playbook tasks are completed"
+
 ...
