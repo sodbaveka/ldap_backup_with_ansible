@@ -1,6 +1,7 @@
 ---
 #var1: "group variable"
 ansible_python_interpreter: /usr/bin/python3
+ldap_main_host: 'srv-ldap-01'
 admin_login: "admin"
 admin_password: "theseus"
 organization: "sodbaveka"

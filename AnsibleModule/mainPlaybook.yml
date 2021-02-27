@@ -15,12 +15,14 @@
 - name: Saving annuary informations
   hosts: localhost
   gather_facts: no
+  vars_files:
+    - group_vars/hosts/variables.yml 
   tasks:
   - name: Backup module launched
     ldap_backup_module: 
-      ldap_main_host: 'srv-ldap-01'
-      connexion_username: 'cn=admin,dc=sodbaveka,dc=com'
-      connexion_password: 'theseus'
+      ldap_main_host: "{{ldap_main_host}}"
+      connexion_username: "{{admin_dn}}"
+      connexion_password: "{{admin_password}}"
     register: result
     no_log: True
   - debug: 
@@ -30,13 +32,15 @@
 - name: Restoring annuary informations
   hosts: localhost
   gather_facts: no
+  vars_files:
+    - group_vars/hosts/variables.yml 
   tasks:
   - name: Restoration module launched
     ldap_restore_module: 
       ldap_backup_host: "{{item}}"
-      connexion_username: 'cn=admin,dc=sodbaveka,dc=com'
-      connexion_password: 'theseus'
-      choosen_action: 'delete'
+      connexion_username: "{{admin_dn}}"
+      connexion_password: "{{admin_password}}"
+      choosen_action: 'push'
     register: result
     no_log: True
     with_items: "{{ groups['hosts'] }}"    

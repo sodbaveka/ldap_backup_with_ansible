@@ -1,0 +1,109 @@
+dn: ou=Operationnels,dc=sodbaveka,dc=com
+objectClass: organizationalUnit
+ou: Operationnels
+description: Equipes operationnelles
+
+dn: ou=RH,dc=sodbaveka,dc=com
+objectClass: organizationalUnit
+ou: RH
+description: Service Relations Humaines
+
+dn: ou=Comptabilite,dc=sodbaveka,dc=com
+objectClass: organizationalUnit
+ou: Comptabilite
+description: Service Comptabilite
+
+dn: ou=Commercial,dc=sodbaveka,dc=com
+objectClass: organizationalUnit
+ou: Commercial
+description: Service Commercial
+
+dn: ou=Informatique,dc=sodbaveka,dc=com
+objectClass: organizationalUnit
+ou: Informatique
+description: Service Informatique
+
+dn: ou=Machines,dc=sodbaveka,dc=com
+objectClass: organizationalUnit
+ou: Machines
+description: Machines de la societe
+
+dn: cn=Tyrion Lannister,ou=Operationnels,dc=sodbaveka,dc=com
+objectClass: inetOrgPerson
+givenName: Tyrion
+sn: Lannister
+cn: Tyrion Lannister
+uid: tlannister
+userPassword: b'tlannister'
+
+dn: cn=Jaime Lannister,ou=Operationnels,dc=sodbaveka,dc=com
+objectClass: inetOrgPerson
+givenName: Jaime
+sn: Lannister
+cn: Jaime Lannister
+uid: jlannister
+userPassword: b'jlannister'
+
+dn: cn=Daenerys Targaryen,ou=RH,dc=sodbaveka,dc=com
+objectClass: inetOrgPerson
+givenName: Daenerys
+sn: Targaryen
+cn: Daenerys Targaryen
+uid: dtargaryen
+userPassword: b'dtargaryen'
+
+dn: cn=Viserys Targaryen,ou=RH,dc=sodbaveka,dc=com
+objectClass: inetOrgPerson
+givenName: Viserys
+sn: Targaryen
+cn: Viserys Targaryen
+uid: vtargaryen
+userPassword: b'vtargaryen'
+
+dn: cn=Edmure Tully,ou=Comptabilite,dc=sodbaveka,dc=com
+objectClass: inetOrgPerson
+givenName: Edmure
+sn: Tully
+cn: Edmure Tully
+uid: etully
+userPassword: b'etully'
+
+dn: cn=Brynden Tully,ou=Comptabilite,dc=sodbaveka,dc=com
+objectClass: inetOrgPerson
+givenName: Brynden
+sn: Tully
+cn: Brynden Tully
+uid: btully
+userPassword: b'btully'
+
+dn: cn=Theon Greyjoy,ou=Commercial,dc=sodbaveka,dc=com
+objectClass: inetOrgPerson
+givenName: Theon
+sn: Greyjoy
+cn: Theon Greyjoy
+uid: tgreyjoy
+userPassword: b'tgreyjoy'
+
+dn: cn=Yara Greyjoy,ou=Commercial,dc=sodbaveka,dc=com
+objectClass: inetOrgPerson
+givenName: Yara
+sn: Greyjoy
+cn: Yara Greyjoy
+uid: ygreyjoy
+userPassword: b'ygreyjoy'
+
+dn: cn=Jon Snow,ou=Informatique,dc=sodbaveka,dc=com
+objectClass: inetOrgPerson
+givenName: Jon
+sn: Snow
+cn: Jon Snow
+uid: jsnow
+userPassword: b'jsnow'
+
+dn: cn=Sansa Stark,ou=Informatique,dc=sodbaveka,dc=com
+objectClass: inetOrgPerson
+givenName: Sansa
+sn: Stark
+cn: Sansa Stark
+uid: sstark
+userPassword: b'sstark'

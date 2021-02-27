@@ -1,0 +1,107 @@
+###INSTRUCTIONS EN FRANCAIS###
+
+I/ Introduction
+
+Le but de ce projet est :
+- d'installer et configurer un serveur ldap à distance,
+- de restaurer les informations sur les unités organisationnelles et les utilisateurs d'un annuaire ldap.
+
+Version de Ansible :
+Ce projet a été écrit avec ansible 2.10.5 et Python 3.7.3.
+
+Pré-requis:
+Un serveur apache, un serveur ssh et python3 sont pré-installés sur les machines de backup distantes (host).
+
+
+II/ Inventaire Ansible
+
+L’inventaire (ou inventory) comprend la liste des machines.
+Par souci d'homogénéité, nous privilégierons le format yaml (tous les autres fichiers ansible sont en format yaml). En outre, grâce à son indentation, il permet de bien visualiser la hiérarchie des groupes et hosts.
+Une machine est appelée host assez logiquement. Un ou plusieurs hosts peuvent consituer un groupe (group). Les hosts peuvent être décrit par des éléments permettant de les joindre : ip, dns principalement.
+Ici, nous créerons le groupe hosts, enfant du groupe all.
+Notre fichier inventory est donc composé de hosts et de groupes. Nous allons donc pouvoir définir des variables de groupes et d’autres spécifiquement pour des hosts. 
+
+
+III/ Variables
+
+Au même niveau que notre dossier inventory, on va retrouver deux répertoires :
+- group_vars
+- host_vars
+
+Une fois dans ces répertoires nous allons pouvoir créer soit :
+- des répertoires par groupe avec le nom du groupe ou par nom de host (vous pourrez ainsi créer plusieurs fichiers si vous avez beaucoup de variables et donc un besoin d’organiser un maximum),
+- des fichiers yaml par nom de groupe ou nom de host (si vous avez peu de variables).
+
+
+IV/ Rôles
+
+Un rôle est une structure arborescente constituée de répertoires et de fichiers de configuration YAML, qui vont avoir pour fonction d’installer/configurer tel ou tel système. Les rôles peuvent être imbriqués et interdépendants les uns des autres.
+
+Ici, nous déterminerons 3 rôles:
+- openldap qui a pour tâches d'installer et configurer openLDAP.
+- restoreAnnuary qui a pour tâches de restaurer l'annuaire ldap à l'aide d'un fichier ldif.
+- ldapAccountManager qui a pour tâches d'installer ldap-account-manager, une interface Web permettant de gérer les entrées (par exemple, utilisateurs, groupes, paramètres DHCP) stockées dans un annuaire LDAP.
+
+
+V/ Modules personnels écrits en python
+
+Dans ce projet, 2 modules Ansible personnels, écrits en python, seront créés.
+
+ldap_backup_module :  Ce module permettra d'automatiser la sauvegarde des objets d'un annuaire ldap dans des fichiers de différents formats exploitables (ldif, json, yml). 
+
+ldap_restore_module : Ce module permettra la restauration des données vers un ou plusieurs serveurs de backup, à l'aide du fichier json précédemment généré. 
+Note : Ce module fait doublon avec le rôle restoreAnnuary. Il faudra choisir la méthode utilisée dans le playbook. Nous privilégerons l'utilisation du module pour l'exercice ;-)
+
+
+VI/ Playbook
+
+Un playbook Ansible est un fichier YAML dans lequel sont mentionnées tous les rôles et toutes les tâches qu'Ansible doit exécuter.
+
+La partition de notre Playbook sera :
+- jouer le rôle openldap qui a pour tâches d'installer et configurer openLDAP,
+- jouer le rôle ldapAccountManager qui a pour tâches d'installer ldap-account-manager,
+- jouer le script du module ldap_backup_module, et créer ainsi des fichiers de différents formats exploitables (ldif, json, yml),
+- jouer le script du module ldap_restore_module, et restaurer des données sur les serveurs de backup, à l'aide du fichier json précédemment généré. 
+
+Pour lancer notre playbook, nous devons utiliser la commande suivante :
+root$ ansible-playbook -i inventory/mainInventory.yml -K mainPlaybook.yml
+
+
+VII/ Organisation
+
+Ci-après l'arborescence de notre répertoire de travail:
+.
+├── EN_instructions.txt
+├── example
+│   └── result_of_ldap_backup_module.
+│       ├── annuary_backup.json
+│       ├── annuary_backup.ldif
+│       └── annuary_backup.yaml
+├── FR_instructions.txt
+├── group_vars
+│   └── hosts
+│       └── variables.yml
+├── handlers
+│   └── main.yml
+├── host_vars
+│   └── srv-ldap-02
+│       └── variables.yml
+├── inventories
+│   └── mainInventory.yml
+├── library
+│   ├── ldap_backup_module.py
+│   └── ldap_restore_module.py
+├── mainPlaybook.yml
+├── roles
+│   ├── ldapAccountManager
+│   │   └── tasks
+│   │       └── main.yml
+│   ├── openldap
+│   │   └── tasks
+│   │       └── main.yml
+│   └── restoreAnnuary
+│       └── tasks
+│           └── main.yml
+└── testPlaybook.yml
+
+

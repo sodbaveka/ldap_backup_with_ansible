@@ -1,22 +1,27 @@
 ---
-- name: Restauration of a ldap annuary
-  hosts:  srv-ldap-05
+
+- name: Uninstalling softwares
+  hosts:  hosts
   remote_user:  theseus
   become: yes
-
-  # vars:
-  #   var1: "Playbook variable"
-  roles:
-    - openldap 
-    - restoreAnnuary
-    - ldapAccountManager
-
   tasks:
-  # - name: Variable precedence test
-  #   debug:
-  #     msg: "This is a message with the variable {{domain_name}}"
-
-  - name: Final message 
-    debug:
-      msg: "All Playbook tasks are completed"
+    - name: Uninstalling slapd
+      apt:
+        name: slapd
+        state: absent
+        purge: yes
+        update_cache: yes
+    - name: Uninstalling ldap-utils
+      apt:
+        name: ldap-utils
+        state: absent
+        purge: yes
+        update_cache: yes
+    
+- name: Final message
+  hosts: hosts
+  tasks:
+    - name: Final message
+      debug:
+        msg: "All Playbook tasks are completed"
 ...

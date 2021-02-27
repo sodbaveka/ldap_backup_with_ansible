@@ -3,7 +3,7 @@
 # FR
 Hello World!
 
-Je m'appelle Mickael alias sodbaveka.
+Je m'appelle Mickaël alias sodbaveka.
 J'ai créé ce dépôt comme un laboratoire pour découvrir git, gitHub, Python et Ansible.
 
 Mon projet en tant qu'apprenant est de réaliser un script python afin d'automatiser la sauvegarde des objets d'un annuaire ldap dans des fichiers de différents formats exploitables (ldif, json, yml). Un autre script python permettra la restauration des données vers un serveur de backup, à l'aide du fichier json généré.
@@ -21,7 +21,7 @@ A bientôt ;-)
 # EN
 Hello World!
 
-My name is Mickael alias sodbaveka.
+My name is Mickaël alias sodbaveka.
 I created this repository as a lab to discover git, gitHub, Python and Ansible.
 
 My project as a learner is to create a python script to automate the saving of objects from an ldap directory to files of different exploitable formats (ldif, json, yml). Another python script will allow data to be restored to a backup server, using the generated json file.

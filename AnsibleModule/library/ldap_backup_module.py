@@ -4,37 +4,44 @@
 # Copyright: (c) 2021, Mickaël Duchet <sodbaveka@gmail.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-DOCUMENTATION = '''
+DOCUMENTATION = r'''
 module: ldap_backup_module
 short_description: Module that saves ldap datas
-description: 
-	- import informations on organizational units and users from an ldap directory,
-	- save informations in files of different exploitable formats (ldif, json, yml).
-version_added: "2.10"
+description:
+  - Import informations on organizational units and users from an ldap directory.
+  - Save informations in files of different exploitable formats (ldif, json, yml).
+version_added: 3.0
 author: Mickaël Duchet (@sodbaveka)
 options:
-	ldap_main_host:
-		description: server ip
-		required: yes 
-    connexion_username:
-     	description: connexion login to ldap annuary
-		required: yes
-    connexion_password:
-     	description: connexion password
-		required: yes
+  ldap_main_host:
+    description: server ip
+    required: yes 
+  connexion_username:
+    description: connexion login to ldap annuary
+    required: yes
+  connexion_password:
+    description: connexion password
+    required: yes
+notes: null
+requirements: null
+
 '''
 
 EXAMPLES = '''
-- name: "Backup module launched"
+- name: Backup module launched
     ldap_backup_module: 
-      ldap_main_host: 'srv-ldap-01'
-      connexion_username: 'cn=admin,dc=example,dc=com'
-      connexion_password: 'p@ssword'
+      ldap_main_host: "{{ldap_main_host}}"
+      connexion_username: "{{admin_dn}}"
+      connexion_password: "{{admin_password}}"
+    register: result
+    no_log: True
+    
 '''
 
-RETURN = '''
+RETURN = r'''
 meta:
-	description: Return 'Success' if files are completed
+  description: Return 'Success' if files are completed
+
 '''
 
 import ldap3

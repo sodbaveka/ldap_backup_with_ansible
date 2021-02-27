@@ -1,0 +1,110 @@
+-   attributes:
+        description: Equipes operationnelles
+        objectClass: organizationalUnit
+        ou: Operationnels
+    dn: ou=Operationnels,dc=sodbaveka,dc=com
+-   attributes:
+        description: Service Relations Humaines
+        objectClass: organizationalUnit
+        ou: RH
+    dn: ou=RH,dc=sodbaveka,dc=com
+-   attributes:
+        description: Service Comptabilite
+        objectClass: organizationalUnit
+        ou: Comptabilite
+    dn: ou=Comptabilite,dc=sodbaveka,dc=com
+-   attributes:
+        description: Service Commercial
+        objectClass: organizationalUnit
+        ou: Commercial
+    dn: ou=Commercial,dc=sodbaveka,dc=com
+-   attributes:
+        description: Service Informatique
+        objectClass: organizationalUnit
+        ou: Informatique
+    dn: ou=Informatique,dc=sodbaveka,dc=com
+-   attributes:
+        description: Machines de la societe
+        objectClass: organizationalUnit
+        ou: Machines
+    dn: ou=Machines,dc=sodbaveka,dc=com
+-   attributes:
+        cn: Tyrion Lannister
+        givenName: Tyrion
+        objectClass: inetOrgPerson
+        sn: Lannister
+        uid: tlannister
+        userPassword: b'tlannister'
+    dn: cn=Tyrion Lannister,ou=Operationnels,dc=sodbaveka,dc=com
+-   attributes:
+        cn: Jaime Lannister
+        givenName: Jaime
+        objectClass: inetOrgPerson
+        sn: Lannister
+        uid: jlannister
+        userPassword: b'jlannister'
+    dn: cn=Jaime Lannister,ou=Operationnels,dc=sodbaveka,dc=com
+-   attributes:
+        cn: Daenerys Targaryen
+        givenName: Daenerys
+        objectClass: inetOrgPerson
+        sn: Targaryen
+        uid: dtargaryen
+        userPassword: b'dtargaryen'
+    dn: cn=Daenerys Targaryen,ou=RH,dc=sodbaveka,dc=com
+-   attributes:
+        cn: Viserys Targaryen
+        givenName: Viserys
+        objectClass: inetOrgPerson
+        sn: Targaryen
+        uid: vtargaryen
+        userPassword: b'vtargaryen'
+    dn: cn=Viserys Targaryen,ou=RH,dc=sodbaveka,dc=com
+-   attributes:
+        cn: Edmure Tully
+        givenName: Edmure
+        objectClass: inetOrgPerson
+        sn: Tully
+        uid: etully
+        userPassword: b'etully'
+    dn: cn=Edmure Tully,ou=Comptabilite,dc=sodbaveka,dc=com
+-   attributes:
+        cn: Brynden Tully
+        givenName: Brynden
+        objectClass: inetOrgPerson
+        sn: Tully
+        uid: btully
+        userPassword: b'btully'
+    dn: cn=Brynden Tully,ou=Comptabilite,dc=sodbaveka,dc=com
+-   attributes:
+        cn: Theon Greyjoy
+        givenName: Theon
+        objectClass: inetOrgPerson
+        sn: Greyjoy
+        uid: tgreyjoy
+        userPassword: b'tgreyjoy'
+    dn: cn=Theon Greyjoy,ou=Commercial,dc=sodbaveka,dc=com
+-   attributes:
+        cn: Yara Greyjoy
+        givenName: Yara
+        objectClass: inetOrgPerson
+        sn: Greyjoy
+        uid: ygreyjoy
+        userPassword: b'ygreyjoy'
+    dn: cn=Yara Greyjoy,ou=Commercial,dc=sodbaveka,dc=com
+-   attributes:
+        cn: Jon Snow
+        givenName: Jon
+        objectClass: inetOrgPerson
+        sn: Snow
+        uid: jsnow
+        userPassword: b'jsnow'
+    dn: cn=Jon Snow,ou=Informatique,dc=sodbaveka,dc=com
+-   attributes:
+        cn: Sansa Stark
+        givenName: Sansa
+        objectClass: inetOrgPerson
+        sn: Stark
+        uid: sstark
+        userPassword: b'sstark'
+    dn: cn=Sansa Stark,ou=Informatique,dc=sodbaveka,dc=com

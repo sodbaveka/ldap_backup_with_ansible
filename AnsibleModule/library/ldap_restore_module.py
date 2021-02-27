@@ -4,37 +4,49 @@
 # Copyright: (c) 2021, Mickaël Duchet <sodbaveka@gmail.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-DOCUMENTATION = '''
+DOCUMENTATION = r'''
 module: ldap_restore_module
-short_description: Module that restores ldap datas
-description: 
-	- import informations on organizational units and users from an json file,
-	- push datas to backup server.
-version_added: "2.10"
+short_description: Module that restores ldap datas.
+description:
+  - Import informations on organizational units and users from an json file.
+  - Push datas to backup server.
+version_added: 3.0
 author: Mickaël Duchet (@sodbaveka)
 options:
-	ldap_backup_host:
-		description: backup server ip
-		required: yes 
-    connexion_username:
-     	description: connexion login to ldap annuary
-		required: yes
-    connexion_password:
-     	description: connexion password
-		required: yes
+  ldap_backup_host:
+    description: backup server ip
+    required: yes
+  connexion_username:
+    description: connexion login to ldap annuary
+    required: yes
+  connexion_password:
+    description: connexion password
+    required: yes
+  choosen_action:
+    description: Type 'push' to restore annuary in backup server, or 'delete' to erase data, according to json file
+    required: yes
+notes: null
+requirements: null
+
 '''
 
 EXAMPLES = '''
-- name: "Restoration module launched"
+ - name: Restoration module launched
     ldap_restore_module: 
-      ldap_main_host: 'srv-ldap-02'
-      connexion_username: 'cn=admin,dc=example,dc=com'
-      connexion_password: 'p@ssword'
+      ldap_backup_host: "{{item}}"
+      connexion_username: "{{admin_dn}}"
+      connexion_password: "{{admin_password}}"
+      choosen_action: 'push'
+    register: result
+    no_log: True
+    with_items: "{{ groups['hosts'] }}"   
+
 '''
 
-RETURN = '''
+RETURN = r'''
 meta:
-	description: Return 'Success' if datas are correctly processed
+  description: Return 'Success' if datas are correctly processed
+
 '''
 
 from ldap3 import Server, Connection, ALL, ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES, SUBTREE
@@ -325,7 +337,7 @@ def main():
 	    	print("User authenticated.\nWelcome {}.".format(ldap_restored_annuary.connexion.extend.standard.who_am_i()))
 	    	# ldap_restored_annuary.deserialize_from_bin()
 	    	ldap_restored_annuary.import_from_json()
-	    	if choosen_action == 'restore':
+	    	if choosen_action == 'push':
 	    		ldap_restored_annuary.push_data()
 	    		msg='Successful copy'
 	    	elif choosen_action == 'delete':
