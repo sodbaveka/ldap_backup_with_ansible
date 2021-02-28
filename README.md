@@ -27,7 +27,7 @@ Bye ;-)
 
 ### Technologies
 ***
-A list of technologies used within the project:
+A list of technologies used within the project :
 * Linux Debian 10.8
 * ansible 2.10.5
   config file = /etc/ansible/ansible.cfg
@@ -38,10 +38,11 @@ A list of technologies used within the project:
 
 ### Installation
 ***
-A little intro about the installation. 
+In /etc/ansible/ansible.cfg, add the library/utils directory to the option 'module_utils'.
 ```
 $ git clone https://github.com/sodbaveka/SodbavekaProject.git
 $ cd ../path/to/the/file
+$ ansible-playbook -i inventories/mainInventory.yml -K mainPlaybook.yml 
 ```
 
 ### License
@@ -51,7 +52,7 @@ $ cd ../path/to/the/file
 
 ### Ressources
 ***
-https://docs.ansible.com/
-https://ldap3.readthedocs.io/en/latest/
-‘python for dummies’ :-p 
+* https://docs.ansible.com/
+* https://ldap3.readthedocs.io/en/latest/
+* ‘python for dummies’ :-p 
 
