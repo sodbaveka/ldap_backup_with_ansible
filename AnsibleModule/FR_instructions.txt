@@ -17,7 +17,7 @@ II/ Inventaire Ansible
 
 L’inventaire (ou inventory) comprend la liste des machines.
 Par souci d'homogénéité, nous privilégierons le format yaml (tous les autres fichiers ansible sont en format yaml). En outre, grâce à son indentation, il permet de bien visualiser la hiérarchie des groupes et hosts.
-Une machine est appelée host assez logiquement. Un ou plusieurs hosts peuvent consituer un groupe (group). Les hosts peuvent être décrit par des éléments permettant de les joindre : ip, dns principalement.
+Une machine est appelée host assez logiquement. Un ou plusieurs hosts peuvent constituer un groupe (group). Les hosts peuvent être décrit par des éléments permettant de les joindre : ip, dns principalement.
 Ici, nous créerons le groupe hosts, enfant du groupe all.
 Notre fichier inventory est donc composé de hosts et de groupes. Nous allons donc pouvoir définir des variables de groupes et d’autres spécifiquement pour des hosts. 
 

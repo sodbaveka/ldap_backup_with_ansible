@@ -1,16 +1,16 @@
 ---
-- name: Installing a ldap server
-  hosts:  hosts
-  remote_user:  theseus
-  become: yes
-  no_log: True
-  roles:
-    - openldap 
-    - ldapAccountManager
-  tasks:
-    - name: Roles message 
-      debug:
-        msg: "All roles are completed"
+# - name: Installing a ldap server
+#   hosts:  hosts
+#   remote_user:  theseus
+#   become: yes
+#   no_log: True
+#   roles:
+#     - openldap 
+#     - ldapAccountManager
+#   tasks:
+#     - name: Roles message 
+#       debug:
+#         msg: "All roles are completed"
 
 - name: Saving annuary informations
   hosts: localhost
