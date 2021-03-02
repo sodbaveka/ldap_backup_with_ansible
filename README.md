@@ -38,9 +38,15 @@ A list of technologies used within the project :
 
 ### Installation
 ***
-In /etc/ansible/ansible.cfg, add the library/utils directory to the option 'module_utils'.
+Download :
 ```
 $ git clone https://github.com/sodbaveka/SodbavekaProject.git
+```
+Path to utility classes :
+In /etc/ansible/ansible.cfg, add the library/utils directory to the option 'module_utils'.
+
+Launch :
+```
 $ cd ../path/to/the/file
 $ ansible-playbook -i inventories/mainInventory.yml -K mainPlaybook.yml 
 ```
