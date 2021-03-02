@@ -42,7 +42,7 @@ Download :
 ```
 $ git clone https://github.com/sodbaveka/SodbavekaProject.git
 ```
-Complete the path to utility classes :\nIn /etc/ansible/ansible.cfg, add the library/utils directory to the option 'module_utils'.
+Complete the path to utility classes :/nIn /etc/ansible/ansible.cfg, add the library/utils directory to the option 'module_utils'.
 
 Launch :
 ```
