@@ -30,22 +30,22 @@ Bye ;-)
 A list of technologies used within the project :
 * Linux Debian 10.8
 * ansible 2.10.5
-  config file = /etc/ansible/ansible.cfg
-  configured module search path = ['/root/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
-  ansible python module location = /usr/local/lib/python3.7/dist-packages/ansible
-  executable location = /usr/local/bin/ansible
+  * config file = /etc/ansible/ansible.cfg
+  * configured module search path = ['/root/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  * ansible python module location = /usr/local/lib/python3.7/dist-packages/ansible
+  * executable location = /usr/local/bin/ansible
 * python version = 3.7.3 (default, Jul 25 2020, 13:03:44) [GCC 8.3.0]
 
 ### Installation
 ***
-Download :
+* Download :
 ```
 $ git clone https://github.com/sodbaveka/SodbavekaProject.git
 ```
-Complete the path to utility classes :
-- In /etc/ansible/ansible.cfg, add the library/utils directory to the option 'module_utils'.
+* Complete the path to utility classes :
+  * In /etc/ansible/ansible.cfg, add the library/utils directory to the option 'module_utils'.
 
-Launch :
+* Launch :
 ```
 $ cd ../path/to/the/file
 $ ansible-playbook -i inventories/mainInventory.yml -K mainPlaybook.yml 
