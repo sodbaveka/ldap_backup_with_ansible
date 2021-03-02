@@ -17,6 +17,12 @@
         state: absent
         purge: yes
         update_cache: yes
+    - name: Uninstalling ldap-account-manager
+      apt:
+        name: ldap-account-manager
+        state: absent
+        purge: yes
+        update_cache: yes
     
 - name: Final message
   hosts: hosts
